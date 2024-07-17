@@ -1,169 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Chat Website</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:weight@300..700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #ffffff;
-      padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 999;
-    }
-
-    h1 {
-      text-align: center;
-      margin-top: 60px;
-      color: #333;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    input[type="text"] {
-      padding: 8px;
-      margin-bottom: 10px;
-      width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin-top: 20px;
-    }
-
-    li {
-      background-color: #fff;
-      padding: 10px;
-      margin-bottom: 5px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      font-family: "Fredoka", sans-serif;
-    }
-  </style>
+  <title>Crappy Chat</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
-<body>
-  <div class="top-bar">
-    <button id="signOutButton">Sign Out</button>
+<body class="bg-gray-100 font-roboto">
+  <div class="container mx-auto h-screen flex flex-col">
+    <header class="bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Crappy Chat</h1>
+      <button id="signOutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
+    </header>
+    <main class="flex-1 flex items-center justify-center">
+      <div class="max-w-lg w-full p-6 bg-white shadow-lg rounded-lg">
+        <ul id="messageList" class="space-y-2"></ul>
+        <form id="messageForm" class="flex items-center space-x-4 mt-4">
+          <input type="text" id="message" name="message" class="flex-1 py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="Type your message..." required>
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Send</button>
+        </form>
+      </div>
+    </main>
+    <footer class="bg-gray-800 text-white py-4 text-center">
+      &copy; 2024 Crappy Chat. All rights reserved.
+    </footer>
   </div>
-  <h1>Chat</h1>
-  <form id="messageForm">
-    <label for="message">Message:</label>
-    <input type="text" id="message" name="message" required>
-    <button type="submit">Send</button>
-  </form>
-
-  <ul id="messageList"></ul>
-
-
-  <script>
-    const WebSocketUrl = 'ws://localhost:7700'
-    //Example: ws://localhost:19132
-    let IsConnected = false;
-
-    function getUsername() {
-      if (IsConnected == false) return alert(`Could Not Connect You To The Server. \n(Is It Offline?)`);
-      let username = localStorage.getItem('username');
-      if (!username || username == "null" || username == '') {
-        username = prompt('Enter your username:');
-        localStorage.setItem('username', username);
-      }
-      return username;
-    }
-    const ws = new WebSocket(WebSocketUrl);
-
-    function displayChatHistory(messages) {
-      const messageList = document.getElementById('messageList');
-      messageList.innerHTML = '';
-      messages.forEach(message => {
-        const li = document.createElement('li');
-        li.textContent = `${message.sender}: ${message.message}`;
-        messageList.appendChild(li);
-      });
-    }
-    const username = getUsername();
-
-
-    if (IsConnected == false) {
-      alert(`Could Not Connect You To The Server. \n(Is It Offline?)`)
-    }
-    ws.onmessage = (event) => {
-      getUsername();
-      const data = JSON.parse(event.data);
-      if (data.history) {
-        displayChatHistory(data.history);
-      } else {
-        const messageList = document.getElementById('messageList');
-        const li = document.createElement('li');
-        li.textContent = `${data.sender}: ${data.message}`;
-        messageList.appendChild(li);
-      }
-    };
-
-    document.getElementById('messageForm').addEventListener('submit', (event) => {
-      if (IsConnected == false) return alert(`Could Not Connect You To The Server. \n(Is It Offline?)`)
-      getUsername();
-      event.preventDefault();
-      const messageInput = document.getElementById('message');
-      const message = messageInput.value.trim();
-      if (message !== '') {
-        ws.send(JSON.stringify({ sender: username, message }));
-        messageInput.value = '';
-        const messageList = document.getElementById('messageList');
-        const li = document.createElement('li');
-        li.textContent = `${getUsername()}: ${message}`;
-        messageList.appendChild(li);
-      }
-    });
-
-    document.getElementById('signOutButton').addEventListener('click', () => {
-      localStorage.removeItem('username');
-      location.reload();
-    });
-    setInterval(() => location.reload(), 10000)
-  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
