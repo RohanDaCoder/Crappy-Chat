@@ -1,9 +1,9 @@
-$(document).ready(function() {
-  const wsUrl = 'ws://localhost:26096';
-  const username = localStorage.getItem('username');
+$(document).ready(function () {
+  const wsUrl = "ws://localhost:26096";
+  const username = localStorage.getItem("username");
 
   if (!username) {
-    window.location.href = 'login.html';
+    window.location.href = "login.html";
     return;
   }
 
@@ -12,11 +12,11 @@ $(document).ready(function() {
   function connectWebSocket() {
     ws = new WebSocket(wsUrl);
 
-    ws.onopen = function() {
-      console.log('Connected to the WebSocket server');
+    ws.onopen = function () {
+      console.log("Connected to the WebSocket server");
     };
 
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.history) {
         data.history.forEach(addMessage);
@@ -25,27 +25,27 @@ $(document).ready(function() {
       }
     };
 
-    ws.onerror = function(error) {
-      console.error('WebSocket error:', error);
-      showError('WebSocket error occurred. Please try again later.');
+    ws.onerror = function (error) {
+      console.error("WebSocket error:", error);
+      showError("WebSocket error occurred. Please try again later.");
     };
 
-    ws.onclose = function(event) {
-      console.log('Disconnected from the WebSocket server');
+    ws.onclose = function (event) {
+      console.log("Disconnected from the WebSocket server");
       if (event.code === 1006) {
-        showError('The Server is offline. Please try again later.');
+        showError("The Server is offline. Please try again later.");
       }
     };
   }
 
   function addMessage(message) {
-    const messageList = document.getElementById('messageList');
-    const listItem = document.createElement('li');
+    const messageList = document.getElementById("messageList");
+    const listItem = document.createElement("li");
     listItem.innerHTML = `<strong>${message.sender}:</strong> ${message.message}`;
     messageList.appendChild(listItem);
 
     const maxMessages = 10;
-    const messages = messageList.querySelectorAll('li');
+    const messages = messageList.querySelectorAll("li");
     if (messages.length > maxMessages) {
       messageList.removeChild(messages[0]);
     }
@@ -54,32 +54,34 @@ $(document).ready(function() {
   }
 
   function showError(message) {
-    const errorTitle = 'An Error Occured';
+    const errorTitle = "An Error Occured";
     const errorMessage = message;
     window.location.href = `error.html?title=${encodeURIComponent(errorTitle)}&message=${encodeURIComponent(errorMessage)}`;
   }
 
   connectWebSocket();
 
-  $('#messageForm').submit(function(event) {
+  $("#messageForm").submit(function (event) {
     event.preventDefault();
-    const message = $('#message').val();
+    const message = $("#message").val();
 
-    if (message.trim() !== '') {
+    if (message.trim() !== "") {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ sender: username, message }));
-        $('#message').val('').focus();
+        $("#message").val("").focus();
       } else {
-        showError('Connection could not be made. Please wait or refresh the page.');
+        showError(
+          "Connection could not be made. Please wait or refresh the page.",
+        );
       }
     }
   });
 
-  $('#signOutButton').click(function() {
-    localStorage.removeItem('username');
+  $("#signOutButton").click(function () {
+    localStorage.removeItem("username");
     if (ws) {
       ws.close();
     }
-    window.location.href = 'signout.html';
+    window.location.href = "signout.html";
   });
 });

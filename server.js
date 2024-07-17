@@ -1,20 +1,20 @@
-const WebSocket = require('ws');
-const colors = require('colors');
+const WebSocket = require("ws");
+const colors = require("colors");
 const PORT = 26096;
 
 const wss = new WebSocket.Server({
-  port: PORT
+  port: PORT,
 });
 
 let messages = [];
 
-wss.on('connection', (client) => {
-  let username = '';
+wss.on("connection", (client) => {
+  let username = "";
 
-  client.on('message', (data) => {
+  client.on("message", (data) => {
     const { sender, message } = JSON.parse(data);
 
-    if (!sender || sender.trim() === '') return;
+    if (!sender || sender.trim() === "") return;
 
     if (!username) {
       username = sender;
@@ -26,38 +26,46 @@ wss.on('connection', (client) => {
 
     wss.clients.forEach((recipient) => {
       if (recipient.readyState === WebSocket.OPEN) {
-        recipient.send(JSON.stringify({
-          sender,
-          message,
-          history: messages
-        }));
+        recipient.send(
+          JSON.stringify({
+            sender,
+            message,
+            history: messages,
+          }),
+        );
       }
     });
 
     console.log(colors.yellow(`${sender}: ${message}`));
   });
 
-  client.on('close', () => {
+  client.on("close", () => {
     if (username) {
       console.log(colors.red(`[Gateway] ${username} left the chat`));
     } else {
-      console.log(colors.red('[Gateway] Client disconnected'));
+      console.log(colors.red("[Gateway] Client disconnected"));
     }
   });
 
-  client.send(JSON.stringify({
-    history: messages
-  }));
+  client.send(
+    JSON.stringify({
+      history: messages,
+    }),
+  );
 });
 
-wss.on('close', () => {
-  console.log(colors.red('[Error] WebSocket server closed, clearing chat history'));
+wss.on("close", () => {
+  console.log(
+    colors.red("[Error] WebSocket server closed, clearing chat history"),
+  );
   messages = [];
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({
-        history: []
-      }));
+      client.send(
+        JSON.stringify({
+          history: [],
+        }),
+      );
     }
   });
 });
