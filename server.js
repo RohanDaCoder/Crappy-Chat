@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const colors = require('colors');
 const PORT = 26096;
 
 const wss = new WebSocket.Server({
@@ -7,23 +8,25 @@ const wss = new WebSocket.Server({
 
 let messages = [];
 
-wss.on('connection', (ws) => {
-  ws.on('message', (data) => {
-    const {
-      sender,
-      message
-    } = JSON.parse(data);
+wss.on('connection', (client) => {
+  let username = '';
 
-    if (!sender || sender === null || sender === '') return;
+  client.on('message', (data) => {
+    const { sender, message } = JSON.parse(data);
 
-    messages.push({
-      sender,
-      message
-    });
+    if (!sender || sender.trim() === '') return;
 
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({
+    if (!username) {
+      username = sender;
+      console.log(colors.green(`[Gateway] ${username} joined the chat`));
+    }
+
+    const newMessage = { sender, message };
+    messages.push(newMessage);
+
+    wss.clients.forEach((recipient) => {
+      if (recipient.readyState === WebSocket.OPEN) {
+        recipient.send(JSON.stringify({
           sender,
           message,
           history: messages
@@ -31,20 +34,24 @@ wss.on('connection', (ws) => {
       }
     });
 
-    console.log(`${sender}: ${message}`);
+    console.log(colors.yellow(`${sender}: ${message}`));
   });
 
-  ws.on('close', () => {
-    console.log('Client disconnected');
+  client.on('close', () => {
+    if (username) {
+      console.log(colors.red(`[Gateway] ${username} left the chat`));
+    } else {
+      console.log(colors.red('[Gateway] Client disconnected'));
+    }
   });
 
-  ws.send(JSON.stringify({
+  client.send(JSON.stringify({
     history: messages
   }));
 });
 
 wss.on('close', () => {
-  console.log('WebSocket server closed, clearing chat history');
+  console.log(colors.red('[Error] WebSocket server closed, clearing chat history'));
   messages = [];
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
@@ -55,4 +62,4 @@ wss.on('close', () => {
   });
 });
 
-console.log(`WebSocket server running on ws://localhost:${PORT}`)
+console.log(colors.cyan(`[Gateway] WebSocket server running on Port ${PORT}`));
