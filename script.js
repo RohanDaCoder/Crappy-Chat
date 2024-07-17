@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  const wsUrl = "ws://localhost:26096";
+  const wsUrl = "ws://pnode3.danbot.host:8374";
   const username = localStorage.getItem("username");
 
   if (!username) {
