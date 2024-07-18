@@ -1,6 +1,6 @@
 const WebSocket = require("ws");
 const colors = require("colors");
-const PORT = 26096;
+const PORT = 3000;
 
 const wss = new WebSocket.Server({
   port: PORT,
