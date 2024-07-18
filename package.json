@@ -1,27 +1,31 @@
 {
-  "name": "crappy-chat",
-  "version": "1.0.0",
-  "description": "A Bare Bone Chat App Using Websockets",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RohanDaCoder/Crappy-Chat.git"
-  },
-  "keywords": [
-    "chat"
-  ],
-  "author": "RohanDaCoder",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/RohanDaCoder/Crappy-Chat/issues"
-  },
-  "homepage": "https://github.com/RohanDaCoder/Crappy-Chat#readme",
-  "dependencies": {
-    "colors": "^1.4.0",
-    "ws": "^8.18.0"
-  }
+   "name": "crappy-chat",
+   "version": "1.0.0",
+   "description": "A Bare Bone Chat App Using Websockets",
+   "main": "server.js",
+   "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "preview": "vite preview"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/RohanDaCoder/Crappy-Chat.git"
+   },
+   "keywords": [
+      "chat"
+   ],
+   "author": "RohanDaCoder",
+   "license": "MIT",
+   "bugs": {
+      "url": "https://github.com/RohanDaCoder/Crappy-Chat/issues"
+   },
+   "homepage": "https://github.com/RohanDaCoder/Crappy-Chat#readme",
+   "dependencies": {
+      "colors": "^1.4.0",
+      "ws": "^8.18.0"
+   },
+   "devDependencies": {
+      "vite": "^5.3.4"
+   }
 }
