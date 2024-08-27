@@ -80,6 +80,8 @@ wss.on("close", () => {
 
 server.listen(PORT, () => {
   console.log(
-    colors.cyan(`[Gateway] WebSocket server running on Port ${PORT}`)
+    colors.cyan(
+      `[Gateway] WebSocket server running on http://localhost:${PORT}`
+    )
   );
 });
