@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    #back {
+      color: blue;
+    }
+  </style>
+  <body class="bg-gray-100 font-sans">
+    <div
+      class="container mx-auto flex flex-col items-center justify-center h-screen"
+    >
+      <h1 class="text-4xl font-bold text-red-600 mb-4" id="errorTitle"></h1>
+      <p class="text-lg text-gray-700" id="errorMessage"></p>
+      <br>
+      <a id="back" href="/index.html">Go Back</a>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+        const errorTitle = params.get("title") || "Something Went Wrong";
+        const errorMessage = params.get("message") || "An Error Occured.";
+
+        if (errorTitle) {
+          document.getElementById("errorTitle").textContent = errorTitle;
+        }
+
+        if (errorMessage) {
+          document.getElementById("errorMessage").textContent = errorMessage;
+        }
+      });
+    </script>
+  </body>
+</html>

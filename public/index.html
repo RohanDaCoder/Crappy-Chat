@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crappy Chat</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-gray-100 font-roboto">
+  <div class="container mx-auto h-screen flex flex-col">
+    <header class="bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Crappy Chat</h1>
+      <button id="signOutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
+    </header>
+    <main class="flex-1 flex items-center justify-center">
+      <div class="max-w-lg w-full p-6 bg-white shadow-lg rounded-lg">
+        <ul id="messageList" class="space-y-2 max-h-80 overflow-y-auto"></ul>
+        <form id="messageForm" class="flex items-center space-x-4 mt-4">
+          <input type="text" id="message" name="message" class="flex-1 py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="Type your message..." required />
+          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+            Send
+          </button>
+        </form>
+      </div>
+    </main>
+    <footer class="bg-gray-800 text-white py-4 text-center">
+      &copy; 2024 Crappy Chat. All rights reserved.
+    </footer>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script defer src="script.js"></script>
+</body>
+
+</html>

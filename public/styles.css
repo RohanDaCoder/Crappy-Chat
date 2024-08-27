@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+header,
+footer {
+  width: 100%;
+}
+
+main {
+  flex: 1;
+}
+
+input[type="text"],
+button {
+  font-family: "Roboto", sans-serif;
+}

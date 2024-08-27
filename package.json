@@ -1,0 +1,30 @@
+{
+  "name": "crappy-chat",
+  "version": "1.0.0",
+  "description": "A Bare Bone Chat App Using Websockets",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon .",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RohanDaCoder/Crappy-Chat.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "RohanDaCoder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RohanDaCoder/Crappy-Chat/issues"
+  },
+  "homepage": "https://github.com/RohanDaCoder/Crappy-Chat#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}
