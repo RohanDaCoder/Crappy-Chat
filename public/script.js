@@ -1,5 +1,5 @@
-$(document).ready(function() {
-  const wsUrl = "ws://pnode3.danbot.host:8374";
+$(document).ready(function () {
+  const wsUrl = "ws://localhost:26096";
   const username = localStorage.getItem("username");
 
   if (!username) {
@@ -12,11 +12,11 @@ $(document).ready(function() {
   function connectWebSocket() {
     ws = new WebSocket(wsUrl);
 
-    ws.onopen = function() {
+    ws.onopen = function () {
       console.log("Connected to the WebSocket server");
     };
 
-    ws.onmessage = function(event) {
+    ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.history) {
         data.history.forEach(addMessage);
@@ -25,12 +25,12 @@ $(document).ready(function() {
       }
     };
 
-    ws.onerror = function(error) {
+    ws.onerror = function (error) {
       console.error("WebSocket error:", error);
       showError("WebSocket error occurred. Please try again later.");
     };
 
-    ws.onclose = function(event) {
+    ws.onclose = function (event) {
       console.log("Disconnected from the WebSocket server");
       if (event.code === 1006) {
         showError("The Server is offline. Please try again later.");
@@ -61,7 +61,7 @@ $(document).ready(function() {
 
   connectWebSocket();
 
-  $("#messageForm").submit(function(event) {
+  $("#messageForm").submit(function (event) {
     event.preventDefault();
     const message = $("#message").val();
 
@@ -70,12 +70,14 @@ $(document).ready(function() {
         ws.send(JSON.stringify({ sender: username, message }));
         $("#message").val("").focus();
       } else {
-        showError("Connection could not be made. Please wait or refresh the page.");
+        showError(
+          "Connection could not be made. Please wait or refresh the page."
+        );
       }
     }
   });
 
-  $("#signOutButton").click(function() {
+  $("#signOutButton").click(function () {
     localStorage.removeItem("username");
     if (ws) {
       ws.close();

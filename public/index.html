@@ -11,25 +11,27 @@
 </head>
 
 <body class="bg-gray-100 font-roboto">
-  <div class="container mx-auto h-screen flex flex-col">
-    <header class="bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Crappy Chat</h1>
+  <div class="container mx-auto h-screen flex flex-col px-4 sm:px-6 lg:px-8">
+    <header class="bg-gray-800 text-white py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <h1 class="text-xl sm:text-2xl font-bold">Crappy Chat</h1>
       <button id="signOutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         <i class="fas fa-sign-out-alt"></i> Sign Out
       </button>
     </header>
-    <main class="flex-1 flex items-center justify-center">
-      <div class="max-w-lg w-full p-6 bg-white shadow-lg rounded-lg">
+    <main class="flex-1 flex items-center justify-center mt-4">
+      <div class="max-w-full sm:max-w-lg w-full p-4 sm:p-6 bg-white shadow-lg rounded-lg">
         <ul id="messageList" class="space-y-2 max-h-80 overflow-y-auto"></ul>
-        <form id="messageForm" class="flex items-center space-x-4 mt-4">
-          <input type="text" id="message" name="message" class="flex-1 py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" placeholder="Type your message..." required />
+        <form id="messageForm" class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
+          <input type="text" id="message" name="message"
+            class="flex-1 py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            placeholder="Type your message..." required />
           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
             Send
           </button>
         </form>
       </div>
     </main>
-    <footer class="bg-gray-800 text-white py-4 text-center">
+    <footer class="bg-gray-800 text-white py-4 text-center mt-4">
       &copy; 2024 Crappy Chat. All rights reserved.
     </footer>
   </div>
